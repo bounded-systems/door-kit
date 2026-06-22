@@ -15,7 +15,9 @@
  *   console.log(`Spawned ${result.launchId} (pid ${result.pid})`);
  */
 
-import { connect } from "bun";
+// Bun.connect via the global (no `import … from "bun"`) so the package resolves
+// on JSR/Deno publish — the same way the guest-room protocol uses Bun globals.
+const connect = Bun.connect;
 
 // ── Types ────────────────────────────────────────────────────────────────────
 

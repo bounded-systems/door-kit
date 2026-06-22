@@ -53,7 +53,9 @@ export function defaultSocketPath(name: string, env: Env = process.env): string 
 /**
  * Create a logger for a claude-box daemon.
  */
-export function createLogger(name: string) {
+export function createLogger(
+  name: string,
+): (level: "INFO" | "ALLOW" | "DENY" | "ERR" | "WARN", message: string) => void {
   return genericLogger(name);
 }
 
