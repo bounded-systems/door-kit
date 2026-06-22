@@ -260,6 +260,51 @@ export async function push(options: PushOptions): Promise<PushResult> {
   });
 }
 
+/** Model-A keeper write input: the host has already done the local, keyless
+ *  `commit-tree` and ships the new commits as a commit-range bundle; keeperd
+ *  imports them and performs ONLY the signed push. The host never grants the
+ *  daemon commit authorship — that asymmetry is the isolation. */
+export type ImportAndPushOptions = {
+  /** Commit-range git bundle (base64) carrying the new commits the host built. */
+  bundleBase64: string;
+  /** The already-materialized commit the daemon imports as the tip and pushes. */
+  commitSha: string;
+  /** Branch to point at the imported commit and push. */
+  branch: string;
+  /** Push remote (e.g. `origin`). */
+  remote: string;
+  /** Extra `git push` args after `<remote> <branch>` (e.g. `--force-with-lease`). */
+  pushArgs?: string[];
+  /** Opt-in attestation: keeperd emits a signed `push/v1` derivation here. */
+  ledgerRef?: string;
+};
+
+/** keeperd's verdict for an import-and-push: `ok` carries the pushed identity
+ *  (and the signed derivation when a ledger was requested); `error` carries a
+ *  branchable code. A non-`ok` verdict is data, not an exception. */
+export type ImportAndPushResult =
+  | { status: "ok"; commitSha: string; pushedRef: string; signedDerivation?: unknown }
+  | { status: "error"; code: string; message: string; exitCode?: number };
+
+/**
+ * Ask keeperd to import the host-built commit-range bundle and signed-push its
+ * branch (object-transfer "model A"). Use this when the host commits locally
+ * (keyless) and the daemon must hold ONLY the push credential + signing key.
+ */
+export async function importAndPush(
+  options: ImportAndPushOptions,
+): Promise<ImportAndPushResult> {
+  return request<ImportAndPushResult>("import-and-push", {
+    kind: "import-and-push",
+    bundleBase64: options.bundleBase64,
+    commitSha: options.commitSha,
+    branch: options.branch,
+    remote: options.remote,
+    ...(options.pushArgs !== undefined ? { pushArgs: options.pushArgs } : {}),
+    ...(options.ledgerRef !== undefined ? { ledgerRef: options.ledgerRef } : {}),
+  });
+}
+
 /**
  * Sign arbitrary data via keeperd.
  *
