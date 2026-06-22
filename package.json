@@ -1,0 +1,23 @@
+{
+  "name": "@bounded-systems/door-kit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "In-box door-client SDK for claude-box's capability doors (keeper/scout/concierge/spawn), over the guest-room protocol.",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "author": "Robert DeLanghe (https://github.com/bdelanghe)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bounded-systems/door-kit.git"
+  },
+  "exports": {
+    "./keeper": "./lib/keeper.ts",
+    "./scout": "./lib/scout.ts",
+    "./concierge": "./lib/concierge.ts",
+    "./spawn": "./lib/spawn.ts",
+    "./runtime": "./lib/runtime.ts"
+  },
+  "scripts": {
+    "test": "bun test"
+  }
+}
