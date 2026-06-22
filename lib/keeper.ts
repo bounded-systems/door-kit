@@ -277,13 +277,23 @@ export type ImportAndPushOptions = {
   pushArgs?: string[];
   /** Opt-in attestation: keeperd emits a signed `push/v1` derivation here. */
   ledgerRef?: string;
+  /** Opt-in: project the signed attestation onto the pushed commit as a git note
+   *  under `refs/notes/<notesRef>` (e.g. `"provenance"`) and push the notes ref. */
+  notesRef?: string;
 };
 
 /** keeperd's verdict for an import-and-push: `ok` carries the pushed identity
- *  (and the signed derivation when a ledger was requested); `error` carries a
- *  branchable code. A non-`ok` verdict is data, not an exception. */
+ *  (and the signed derivation when a ledger was requested; plus a `note` status
+ *  when a `notesRef` was projected); `error` carries a branchable code. A
+ *  non-`ok` verdict is data, not an exception. */
 export type ImportAndPushResult =
-  | { status: "ok"; commitSha: string; pushedRef: string; signedDerivation?: unknown }
+  | {
+      status: "ok";
+      commitSha: string;
+      pushedRef: string;
+      signedDerivation?: unknown;
+      note?: { ref: string; written: boolean; pushed: boolean };
+    }
   | { status: "error"; code: string; message: string; exitCode?: number };
 
 /**
@@ -302,6 +312,7 @@ export async function importAndPush(
     remote: options.remote,
     ...(options.pushArgs !== undefined ? { pushArgs: options.pushArgs } : {}),
     ...(options.ledgerRef !== undefined ? { ledgerRef: options.ledgerRef } : {}),
+    ...(options.notesRef !== undefined ? { notesRef: options.notesRef } : {}),
   });
 }
 
