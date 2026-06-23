@@ -1,0 +1,10 @@
+{
+  "name": {
+    "type": "name",
+    "value": "Door Kit"
+  },
+  "description": {
+    "type": "meta",
+    "value": "In-box door-client SDK for claude-box's capability doors (keeper/scout/concierge/spawn), over the guest-room protocol."
+  }
+}
