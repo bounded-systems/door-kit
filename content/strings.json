@@ -3,8 +3,12 @@
     "type": "name",
     "value": "Door Kit"
   },
+  "tagline": {
+    "type": "tagline",
+    "value": "door-kit is the client side of claude-box's capability doors: one small in-box client per door, plus shared runtime h…"
+  },
   "description": {
     "type": "meta",
-    "value": "In-box door-client SDK for claude-box's capability doors (keeper/scout/concierge/spawn), over the guest-room protocol."
+    "value": "door-kit is the client side of claude-box's capability doors: one small in-box client per door, plus shared runtime helpers.  A boxed agent imports these to call the doors over the guest-room protocol — it never holds credentials or speaks to the daemons directly.  | Module | …"
   }
 }
