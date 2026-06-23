@@ -273,6 +273,10 @@ export async function push(options: PushOptions): Promise<PushResult> {
 
 /** Options for import-and-push: the host builds commits locally (keyless) and keeperd signs the push. */
 export type ImportAndPushOptions = {
+  /** The repo keeperd imports the bundle into and pushes from (the daemon-side
+   *  keeper clone; path-translated like `commit`/`push` via CLAUDE_BOX_HOST_REPO).
+   *  Required — the daemon has no implicit repo. */
+  repo: string;
   /** Commit-range git bundle (base64) carrying the new commits the host built. */
   bundleBase64: string;
   /** The already-materialized commit the daemon imports as the tip and pushes. */
@@ -314,6 +318,7 @@ export async function importAndPush(
 ): Promise<ImportAndPushResult> {
   return request<ImportAndPushResult>("import-and-push", {
     kind: "import-and-push",
+    repo: translateRepoPath(options.repo),
     bundleBase64: options.bundleBase64,
     commitSha: options.commitSha,
     branch: options.branch,
