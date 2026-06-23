@@ -316,6 +316,41 @@ export async function importAndPush(
   });
 }
 
+/** A launch (L2) attestation request: attest that a room was launched holding
+ *  exactly these doors. `manifest` is the room's resolved door set — authority is
+ *  the held references, so the daemon digests it into the attestation. */
+export type AttestLaunchOptions = {
+  /** The launched room/box id (the subject of the launch attestation). */
+  subject: string;
+  /** The room's resolved door set / manifest (authority = held references). */
+  manifest: unknown;
+};
+
+/** keeperd's verdict for an attest-launch: `ok` carries the signed L2 plus its
+ *  content-address (`l2LaunchDigest`, what an L3 write links back to). */
+export type AttestLaunchResult =
+  | {
+      status: "ok";
+      subject: string;
+      manifestDigest: string;
+      l2LaunchDigest: string;
+      attestation: unknown;
+    }
+  | { status: "error"; code: string; message: string };
+
+/**
+ * Ask a signer door to produce a signed **L2 launch attestation** over a room +
+ * the doors it holds. The launcher acts THROUGH the door — the signing key never
+ * leaves the daemon (ocap credential isolation). The human is a guest too, so the
+ * launcher is just the launching guest's own signer door.
+ */
+export async function attestLaunch(options: AttestLaunchOptions): Promise<AttestLaunchResult> {
+  return request<AttestLaunchResult>("attest-launch", {
+    subject: options.subject,
+    manifest: options.manifest,
+  });
+}
+
 /**
  * Sign arbitrary data via keeperd.
  *
