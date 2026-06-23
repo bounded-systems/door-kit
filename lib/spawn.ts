@@ -1,4 +1,5 @@
 /**
+ * @module
  * spawn.ts — in-box client for launcherd
  *
  * A box with the `--launcher` door can use this to spawn sub-boxes.

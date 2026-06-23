@@ -1,4 +1,5 @@
 /**
+ * @module
  * concierge.ts — in-box client for concierged (the --concierge door).
  *
  * Service-oriented delegation, replacing lib/spawn.ts's role: a box does not

@@ -1,4 +1,5 @@
 /**
+ * @module
  * keeper.ts — in-box client for keeperd
  *
  * A box with the `--keeper` door can use this to make signed commits and pushes.

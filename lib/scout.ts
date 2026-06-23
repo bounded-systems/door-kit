@@ -1,4 +1,5 @@
 /**
+ * @module
  * scout.ts — in-box client for scoutd
  *
  * A box with the `--scout` door can use this to fetch external content.

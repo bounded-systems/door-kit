@@ -1,4 +1,5 @@
 /**
+ * @module
  * runtime.ts — claude-box runtime helpers for daemons.
  *
  * Bridges the guest-agnostic guest-room/ modules with claude-box-specific
