@@ -24,6 +24,7 @@ const connect = Bun.connect;
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
+/** Options for creating a signed commit via keeperd. */
 export type CommitOptions = {
   /** Repository path */
   repo: string;
@@ -39,6 +40,7 @@ export type CommitOptions = {
   amend?: boolean;
 };
 
+/** Result of a signed commit operation via keeperd. */
 export type CommitResult = {
   commit: string;
   attestation?: {
@@ -49,6 +51,7 @@ export type CommitResult = {
   };
 };
 
+/** Options for pushing to a remote repository via keeperd. */
 export type PushOptions = {
   /** Repository path */
   repo: string;
@@ -62,27 +65,32 @@ export type PushOptions = {
   setUpstream?: boolean;
 };
 
+/** Result of a push operation via keeperd. */
 export type PushResult = {
   pushed: string;
   commits: string[];
 };
 
+/** Result of a sign operation via keeperd. */
 export type SignResult = {
   signature: string;
   keyId: string;
 };
 
+/** Result of a signature verification via keeperd. */
 export type VerifyResult = {
   valid: boolean;
   keyId?: string;
 };
 
+/** Health and status information from keeperd. */
 export type KeeperStatus = {
   version: string;
   uptime: number;
   signing: { enabled: boolean; keyId?: string };
 };
 
+/** Error from keeperd operations, with an error code for pattern matching. */
 export class KeeperError extends Error {
   code: string;
   constructor(code: string, message: string) {
@@ -260,10 +268,7 @@ export async function push(options: PushOptions): Promise<PushResult> {
   });
 }
 
-/** Model-A keeper write input: the host has already done the local, keyless
- *  `commit-tree` and ships the new commits as a commit-range bundle; keeperd
- *  imports them and performs ONLY the signed push. The host never grants the
- *  daemon commit authorship — that asymmetry is the isolation. */
+/** Options for import-and-push: the host builds commits locally (keyless) and keeperd signs the push. */
 export type ImportAndPushOptions = {
   /** Commit-range git bundle (base64) carrying the new commits the host built. */
   bundleBase64: string;
@@ -282,10 +287,7 @@ export type ImportAndPushOptions = {
   notesRef?: string;
 };
 
-/** keeperd's verdict for an import-and-push: `ok` carries the pushed identity
- *  (and the signed derivation when a ledger was requested; plus a `note` status
- *  when a `notesRef` was projected); `error` carries a branchable code. A
- *  non-`ok` verdict is data, not an exception. */
+/** Result of an import-and-push operation: either success with pushed identity or an error verdict. */
 export type ImportAndPushResult =
   | {
       status: "ok";
@@ -316,9 +318,7 @@ export async function importAndPush(
   });
 }
 
-/** A launch (L2) attestation request: attest that a room was launched holding
- *  exactly these doors. `manifest` is the room's resolved door set — authority is
- *  the held references, so the daemon digests it into the attestation. */
+/** Options for attesting a room launch: captures the doors held at launch time. */
 export type AttestLaunchOptions = {
   /** The launched room/box id (the subject of the launch attestation). */
   subject: string;
@@ -326,8 +326,7 @@ export type AttestLaunchOptions = {
   manifest: unknown;
 };
 
-/** keeperd's verdict for an attest-launch: `ok` carries the signed L2 plus its
- *  content-address (`l2LaunchDigest`, what an L3 write links back to). */
+/** Result of a launch attestation: either a signed L2 with content address or an error. */
 export type AttestLaunchResult =
   | {
       status: "ok";

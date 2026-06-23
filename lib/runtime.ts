@@ -18,7 +18,7 @@ import {
   type RunDirFn,
 } from "../guest-room/daemon.ts";
 
-// Re-export protocol types for convenience
+// Re-export protocol types and functions for convenience.
 export {
   type RequestEnvelope,
   type ResponseEnvelope,
@@ -30,7 +30,7 @@ export {
   type MethodRegistry,
 } from "../guest-room/protocol.ts";
 
-// Re-export daemon utilities
+// Re-export daemon utilities.
 export { prepareSocket, type Env };
 
 /**

@@ -20,8 +20,7 @@
 // path; nothing here names a guest — a test enforces that the engine source is
 // guest-agnostic, so the seam can't silently re-couple.
 
-/** A door name lands in a mount path (`/run/<name>.sock`) and an env var, so it
- *  must be path-safe — no `/`, no `..`, no injection into the mount spec. */
+/** Regex validating door names: must be lowercase alphanumeric and hyphens only (path-safe). */
 export const DOOR_NAME_RE = /^[a-z0-9][a-z0-9-]*$/;
 
 // ── Door transport ───────────────────────────────────────────────────────────
@@ -68,6 +67,7 @@ export function transportString(t: DoorTransport): string {
   }
 }
 
+/** Environment variable record. */
 export type Env = Record<string, string | undefined>;
 
 /** Default host socket for a daemon, private-dir-first. Pure (no I/O) so door
