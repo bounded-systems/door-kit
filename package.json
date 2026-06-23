@@ -19,5 +19,12 @@
   },
   "scripts": {
     "test": "bun test"
+  },
+  "bounded": {
+    "tagline": "In-box door-client SDK for claude-box's capability doors, over the guest-room protocol",
+    "kind": "door",
+    "facet": "verb",
+    "role": "client",
+    "domain": "door/protocol"
   }
 }
