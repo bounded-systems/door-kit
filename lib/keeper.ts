@@ -280,6 +280,9 @@ export type ImportAndPushOptions = {
   /** Opt-in: project the signed attestation onto the pushed commit as a git note
    *  under `refs/notes/<notesRef>` (e.g. `"provenance"`) and push the notes ref. */
   notesRef?: string;
+  /** Opt-in: the content-address of the box's L2 launch attestation, so the L3
+   *  write links back to its launch (capability chain: write → launch). */
+  l2LaunchDigest?: string;
 };
 
 /** keeperd's verdict for an import-and-push: `ok` carries the pushed identity
@@ -313,6 +316,7 @@ export async function importAndPush(
     ...(options.pushArgs !== undefined ? { pushArgs: options.pushArgs } : {}),
     ...(options.ledgerRef !== undefined ? { ledgerRef: options.ledgerRef } : {}),
     ...(options.notesRef !== undefined ? { notesRef: options.notesRef } : {}),
+    ...(options.l2LaunchDigest !== undefined ? { l2LaunchDigest: options.l2LaunchDigest } : {}),
   });
 }
 
