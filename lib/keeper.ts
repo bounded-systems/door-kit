@@ -92,7 +92,9 @@ export type KeeperStatus = {
 
 /** Error from keeperd operations, with an error code for pattern matching. */
 export class KeeperError extends Error {
+  /** Machine-readable error code for pattern matching. */
   code: string;
+  /** Create a KeeperError with a `code` and human-readable `message`. */
   constructor(code: string, message: string) {
     super(message);
     this.code = code;

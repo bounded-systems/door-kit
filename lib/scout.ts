@@ -146,7 +146,9 @@ export type ScoutStatus = {
 
 /** Error from scoutd operations, with an error code for pattern matching. */
 export class ScoutError extends Error {
+  /** Machine-readable error code for pattern matching. */
   code: string;
+  /** Create a ScoutError with a `code` and human-readable `message`. */
   constructor(code: string, message: string) {
     super(message);
     this.code = code;

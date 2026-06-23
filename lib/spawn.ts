@@ -91,7 +91,9 @@ export type BoxInfo = {
 
 /** Error from launcherd operations, with an error code for pattern matching. */
 export class LauncherdError extends Error {
+  /** Machine-readable error code for pattern matching. */
   code: string;
+  /** Create a LauncherdError with a `code` and human-readable `message`. */
   constructor(code: string, message: string) {
     super(message);
     this.code = code;

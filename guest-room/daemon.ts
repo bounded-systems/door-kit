@@ -15,6 +15,7 @@
 
 import { mkdirSync, unlinkSync } from "node:fs";
 
+/** Process environment map (`process.env` shape). */
 export type Env = Record<string, string | undefined>;
 
 /** Function to determine the run directory for sockets. */
