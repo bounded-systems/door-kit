@@ -20,6 +20,7 @@ const connect = Bun.connect;
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
+/** Options for fetching repository metadata via scoutd. */
 export type RepoOptions = {
   /** GitHub repo URL or owner/repo */
   url: string;
@@ -27,6 +28,7 @@ export type RepoOptions = {
   ref?: string;
 };
 
+/** Repository metadata fetched via scoutd. */
 export type RepoResult = {
   owner: string;
   repo: string;
@@ -36,6 +38,7 @@ export type RepoResult = {
   tarballUrl: string;
 };
 
+/** Options for fetching a pull request via scoutd. */
 export type PrOptions = {
   /** GitHub repo (owner/repo or URL) */
   repo: string;
@@ -47,6 +50,7 @@ export type PrOptions = {
   comments?: boolean;
 };
 
+/** Pull request details fetched via scoutd. */
 export type PrResult = {
   number: number;
   title: string;
@@ -69,6 +73,7 @@ export type PrResult = {
   }>;
 };
 
+/** Options for fetching a GitHub issue via scoutd. */
 export type IssueOptions = {
   /** GitHub repo (owner/repo or URL) */
   repo: string;
@@ -78,6 +83,7 @@ export type IssueOptions = {
   comments?: boolean;
 };
 
+/** GitHub issue details fetched via scoutd. */
 export type IssueResult = {
   number: number;
   title: string;
@@ -94,6 +100,7 @@ export type IssueResult = {
   }>;
 };
 
+/** Options for fetching a URL via scoutd. */
 export type FetchOptions = {
   /** URL to fetch */
   url: string;
@@ -103,6 +110,7 @@ export type FetchOptions = {
   maxSize?: number;
 };
 
+/** Response from fetching a URL via scoutd. */
 export type FetchResult = {
   url: string;
   status: number;
@@ -111,6 +119,7 @@ export type FetchResult = {
   body: string;
 };
 
+/** Options for downloading a file via scoutd. */
 export type DownloadOptions = {
   /** URL to download */
   url: string;
@@ -118,6 +127,7 @@ export type DownloadOptions = {
   maxSize?: number;
 };
 
+/** Downloaded file content via scoutd (base64 encoded). */
 export type DownloadResult = {
   url: string;
   size: number;
@@ -126,6 +136,7 @@ export type DownloadResult = {
   data: string; // base64
 };
 
+/** Health and status information from scoutd. */
 export type ScoutStatus = {
   version: string;
   uptime: number;
@@ -133,6 +144,7 @@ export type ScoutStatus = {
   allowlist: string[];
 };
 
+/** Error from scoutd operations, with an error code for pattern matching. */
 export class ScoutError extends Error {
   code: string;
   constructor(code: string, message: string) {

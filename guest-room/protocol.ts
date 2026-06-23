@@ -14,12 +14,14 @@ import type { Socket } from "bun";
 
 // ── Protocol types (shared across all doors) ────────────────────────────────
 
+/** Request envelope sent to a door daemon. */
 export type RequestEnvelope = {
   id: string;
   method: string;
   params?: Record<string, unknown>;
 };
 
+/** Response envelope from a door daemon. */
 export type ResponseEnvelope = {
   id: string;
   ok: boolean;
@@ -41,10 +43,12 @@ export function err(id: string, code: string, message: string): ResponseEnvelope
 
 // ── Connection handler ──────────────────────────────────────────────────────
 
+/** Handler function for a door method. */
 export type MethodHandler = (
   params: Record<string, unknown>,
 ) => Promise<unknown> | unknown;
 
+/** Registry mapping method names to handler functions. */
 export type MethodRegistry = Record<string, MethodHandler>;
 
 /**
