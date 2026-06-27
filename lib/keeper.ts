@@ -419,6 +419,33 @@ export async function isAvailable(): Promise<boolean> {
 
 // ── CLI (for testing) ────────────────────────────────────────────────────────
 
+/**
+ * Read an AI-authorship CLAIM from the file named by `$KEEPER_AUTHORSHIP_SINK`
+ * (newline-delimited, repo-relative paths the model edited) and truncate it.
+ * The sink is a self-report channel populated out-of-band — e.g. an agent's
+ * edit hook — so the CLI need not know how the claim was produced; keeperd
+ * reconciles it against the real staged diff. Absent / empty / unreadable → no
+ * claim (keeperd then records no authorship). `$KEEPER_AUTHORSHIP_MODEL` labels
+ * the model, if set.
+ */
+async function readAuthorshipSink(): Promise<{ model?: string; aiAuthored: string[] } | undefined> {
+  const path = process.env.KEEPER_AUTHORSHIP_SINK;
+  if (!path) return undefined;
+  try {
+    const f = Bun.file(path);
+    if (!(await f.exists())) return undefined;
+    const aiAuthored = [
+      ...new Set((await f.text()).split("\n").map((s) => s.trim()).filter(Boolean)),
+    ].sort();
+    await Bun.write(path, ""); // next commit starts fresh (best-effort)
+    if (!aiAuthored.length) return undefined;
+    const model = process.env.KEEPER_AUTHORSHIP_MODEL;
+    return { ...(model ? { model } : {}), aiAuthored };
+  } catch {
+    return undefined;
+  }
+}
+
 async function main(): Promise<number> {
   const [cmd, ...args] = Bun.argv.slice(2);
 
@@ -431,7 +458,13 @@ async function main(): Promise<number> {
     case "commit": {
       const repo = args[0] ?? ".";
       const message = args[1] ?? "commit via keeper";
-      const result = await commit({ repo, message, all: true });
+      const authorship = await readAuthorshipSink();
+      const result = await commit({
+        repo,
+        message,
+        all: true,
+        ...(authorship ? { authorship } : {}),
+      });
       console.log(`committed ${result.commit}`);
       if (result.attestation) {
         console.log(`attestation: ${result.attestation.statementDigest}`);
