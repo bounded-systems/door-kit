@@ -39,6 +39,14 @@ export type CommitOptions = {
   all?: boolean;
   /** Amend the last commit */
   amend?: boolean;
+  /**
+   * The model's CLAIMED AI authorship for this commit — a self-report, not
+   * authority. keeperd reconciles it against the files that actually stage and
+   * records aiAuthored / divergent (bypass) / stale in the signed L3 attestation
+   * (see door-keeper, GITAI-PROVENANCE.md). Omit it and keeperd records no
+   * authorship (no false signal). `aiAuthored` is repo-relative paths.
+   */
+  authorship?: { model?: string; aiAuthored?: string[] };
 };
 
 /** Result of a signed commit operation via keeperd. */
@@ -253,6 +261,9 @@ export async function commit(options: CommitOptions): Promise<CommitResult> {
     files: options.files,
     all: options.all ?? false,
     amend: options.amend ?? false,
+    // Forwarded only when supplied — keeperd treats absent authorship as
+    // "no claim" (older keeperds simply ignore the extra param).
+    ...(options.authorship ? { authorship: options.authorship } : {}),
   });
 }
 
