@@ -26,5 +26,9 @@
     "facet": "verb",
     "role": "client",
     "domain": "door/protocol"
+  },
+  "devDependencies": {
+    "@bounded-systems/seam-check": "npm:@jsr/bounded-systems__seam-check@^0.1.0",
+    "@types/bun": "^1.3.14"
   }
 }
