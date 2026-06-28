@@ -1,0 +1,21 @@
+extractability.test.ts
+  s_8bfe0e8de6557c::t_06b0cb23ff1e52 20
+guest-room/protocol.ts
+  s_8bfe0e8de6557c::t_f84361f0c49015 39-46,49-51,53-54,350-361,363-364,366-367,369-384
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "2b322e4e89519511c8297a30ebda67a3614ac890",
+  "prompts": {},
+  "sessions": {
+    "s_8bfe0e8de6557c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "159cecef-b114-4932-b219-6b198cbf9abd",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Robert DeLanghe <1240090+bdelanghe@users.noreply.github.com>"
+    }
+  }
+}
