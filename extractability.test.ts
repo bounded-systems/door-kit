@@ -17,10 +17,7 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 test("@bounded-systems/door-kit upholds its seam claim", () => {
   assertSeam({
     root: ROOT,
-    // "bun" is the Bun socket API, imported by the vendored guest-room/protocol.ts
-    // (an older copy than upstream, which now declares Bun locally to stay
-    // JSR-resolvable); re-vendoring would drop it from this surface.
-    prod: ["node:buffer", "node:crypto", "node:fs", "node:process", "bun"],
+    prod: ["node:buffer", "node:crypto", "node:fs", "node:process"],
     test: ["@bounded-systems/seam-check"],
     // Drop only the ambient-env rule (env is door-kit's declared bootstrap
     // surface); keep subprocess spawning forbidden.
