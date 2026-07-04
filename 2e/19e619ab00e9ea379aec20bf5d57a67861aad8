@@ -1,0 +1,27 @@
+wire-conformance.test.ts
+  s_70508ca017cb29::t_daac78c46b61ca 1-56
+package.json
+  s_70508ca017cb29::t_f719cd93fff9ed 32-34
+extractability.test.ts
+  s_70508ca017cb29::t_0a999e39d867ba 21-27
+lib/concierge.ts
+  s_70508ca017cb29::t_4697defbdbd611 105-112
+bun.lock
+  s_70508ca017cb29::t_582127ea1c7fcf 8-10,17-22,25-26,34-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "2e19e619ab00e9ea379aec20bf5d57a67861aad8",
+  "prompts": {},
+  "sessions": {
+    "s_70508ca017cb29": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d283f13f-34c8-429b-8cb1-b020e645c0e4",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Robert DeLanghe <1240090+bdelanghe@users.noreply.github.com>"
+    }
+  }
+}
