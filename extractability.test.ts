@@ -18,7 +18,13 @@ test("@bounded-systems/door-kit upholds its seam claim", () => {
   assertSeam({
     root: ROOT,
     prod: ["node:buffer", "node:crypto", "node:fs", "node:process"],
-    test: ["@bounded-systems/seam-check"],
+    test: [
+      "@bounded-systems/seam-check",
+      // the wire agreements the conformance test verifies each client against
+      "@bounded-systems/keeper-wire",
+      "@bounded-systems/scout-wire",
+      "@bounded-systems/concierge-wire",
+    ],
     // Drop only the ambient-env rule (env is door-kit's declared bootstrap
     // surface); keep subprocess spawning forbidden.
     forbidAmbient: DEFAULT_AMBIENT_RULES.filter(([, label]) => label !== "ambient env / auth"),
