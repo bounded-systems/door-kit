@@ -6,7 +6,7 @@
       "name": "@bounded-systems/door-kit",
       "devDependencies": {
         "@bounded-systems/concierge-wire": "npm:@jsr/bounded-systems__concierge-wire@^0.1.0",
-        "@bounded-systems/keeper-wire": "npm:@jsr/bounded-systems__keeper-wire@^0.1.0",
+        "@bounded-systems/keeper-wire": "npm:@jsr/bounded-systems__keeper-wire@^0.2.0",
         "@bounded-systems/scout-wire": "npm:@jsr/bounded-systems__scout-wire@^0.2.0",
         "@bounded-systems/seam-check": "npm:@jsr/bounded-systems__seam-check@^0.1.0",
         "@types/bun": "^1.3.14",
@@ -16,7 +16,7 @@
   "packages": {
     "@bounded-systems/concierge-wire": ["@jsr/bounded-systems__concierge-wire@0.1.0", "https://npm.jsr.io/~/11/@jsr/bounded-systems__concierge-wire/0.1.0.tgz", { "dependencies": { "@jsr/bounded-systems__verbspec": "^0.3.1", "zod": "^4.4.3" } }, "sha512-NS8UbNtwkWe85EHWqwuPZUTv1fhAIgs9PpNXkNvWaQOJtTeLatwW48MUWirQZwJtavqTrbUYOaQFfRc7C2AuZw=="],
 
-    "@bounded-systems/keeper-wire": ["@jsr/bounded-systems__keeper-wire@0.1.0", "https://npm.jsr.io/~/11/@jsr/bounded-systems__keeper-wire/0.1.0.tgz", { "dependencies": { "@jsr/bounded-systems__verbspec": "^0.3.1", "zod": "^4.4.3" } }, "sha512-QXkiqw69NiLKfaGsluzGzbaQScXQFYPXmeCKE1nzhHzShTajhb56zIz7xnMEtFFV5Yi4r1CQBMh93S6p/AWIBw=="],
+    "@bounded-systems/keeper-wire": ["@jsr/bounded-systems__keeper-wire@0.2.0", "https://npm.jsr.io/~/11/@jsr/bounded-systems__keeper-wire/0.2.0.tgz", { "dependencies": { "@jsr/bounded-systems__verbspec": "^0.3.1", "zod": "^4.4.3" } }, "sha512-aLicNPTE3zBRubinMATo1pVSYzQ0Wa/2z43v0OGh3lCgO3pPJXU2WtstZgAiQZ/SiyNUAyE7AJJWltajLDs6SA=="],
 
     "@bounded-systems/scout-wire": ["@jsr/bounded-systems__scout-wire@0.2.0", "https://npm.jsr.io/~/11/@jsr/bounded-systems__scout-wire/0.2.0.tgz", { "dependencies": { "@jsr/bounded-systems__verbspec": "^0.3.1", "zod": "^4.4.3" } }, "sha512-jlUKWsTmtfAZMf5gbveXpS//AZbMOEmGXkQ9vXm2qM6cargRT25p6bKk7OSqY18jemzIGysEobeyYnJ0CmTlbg=="],
 
