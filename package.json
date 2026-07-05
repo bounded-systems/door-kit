@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@bounded-systems/seam-check": "npm:@jsr/bounded-systems__seam-check@^0.1.0",
-    "@bounded-systems/keeper-wire": "npm:@jsr/bounded-systems__keeper-wire@^0.1.0",
+    "@bounded-systems/keeper-wire": "npm:@jsr/bounded-systems__keeper-wire@^0.2.0",
     "@bounded-systems/scout-wire": "npm:@jsr/bounded-systems__scout-wire@^0.2.0",
     "@bounded-systems/concierge-wire": "npm:@jsr/bounded-systems__concierge-wire@^0.1.0",
     "@types/bun": "^1.3.14"
