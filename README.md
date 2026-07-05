@@ -19,7 +19,7 @@ credentials or speaks to the daemons directly.
 ## guest-room is vendored
 
 `lib/` imports the guest-room engine (`../guest-room/{mod,protocol,daemon}.ts`). `./guest-room/`
-here is a **generated mirror** pinned to `bounded-systems/guest-room@5bc85b6`, kept in lockstep
+here is a **generated mirror** pinned to `bounded-systems/guest-room@e8cbeaa`, kept in lockstep
 the same way claude-box does — bump the pin and re-vendor the files together.
 
 _Extracted from claude-box `lib/` — decomposition epic `prx-ii01`, card 1b._
