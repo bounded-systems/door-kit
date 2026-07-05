@@ -1,0 +1,26 @@
+package.json
+  s_247a50e4d32eae::t_a750e2a4c46126 32
+lib/keeper.ts
+  s_247a50e4d32eae::t_fd6ec8c35074b8 548-549
+  s_247a50e4d32eae::t_a22883eb993037 526-535
+  s_247a50e4d32eae::t_a15c45b3c36c50 86-106
+  s_247a50e4d32eae::t_be39d1734a686d 313-329
+bun.lock
+  s_247a50e4d32eae::t_5466e31d5140f5 9,19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "49d336c7381f9fa14749a0fd528b8d769a9580ae",
+  "prompts": {},
+  "sessions": {
+    "s_247a50e4d32eae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f8dc305b-bdb8-484d-9a77-d8972a757dd8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Robert DeLanghe <1240090+bdelanghe@users.noreply.github.com>"
+    }
+  }
+}
