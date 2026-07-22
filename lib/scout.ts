@@ -122,7 +122,16 @@ export type ProjectItem = {
   url: string;
   repo: string;
   contentType: "Issue" | "PullRequest";
-  state: string;
+  /** Strict lifecycle state — compare board Status against the real GitHub state. */
+  state: "OPEN" | "CLOSED" | "MERGED";
+  /** Underlying Issue/PR node id — lets a caller derive board membership. */
+  contentId: string;
+  /** ProjectV2Item node id — the handle a write path would target. */
+  itemId: string;
+  /** ISO 8601 creation timestamp — feeds age-based prioritization. */
+  createdAt: string;
+  /** Visibility of the item's repo — public/private board contract. */
+  isPrivate: boolean;
   /** Custom field values keyed by field name (e.g. Status, Kind, Score). */
   fields: Record<string, string | number>;
 };
@@ -132,6 +141,81 @@ export type ProjectResult = {
   title: string;
   items: ProjectItem[];
   pageInfo: { hasNextPage: boolean; endCursor: string | null };
+};
+
+/** One repo the daemon could not fully read, and why. Org-wide reads are
+ *  partial: an unreadable repo is skipped, never aborting the enumeration. */
+export type SkippedRepo = {
+  repo: string;
+  reason: string;
+};
+
+/** Options for listing an org's repositories via scoutd. */
+export type ReposOptions = {
+  /** Org login, e.g. "bounded-systems" */
+  org: string;
+  /** Include private repos (default false — fail-closed on visibility). */
+  includePrivate?: boolean;
+};
+
+/** One repository in an org, fetched via scoutd. */
+export type RepoInfo = {
+  id: string;
+  name: string;
+  isPrivate: boolean;
+};
+
+/** An org's repositories fetched via scoutd. */
+export type ReposResult = {
+  repos: RepoInfo[];
+};
+
+/** Options for enumerating an org's open work via scoutd. */
+export type OrgOpenWorkOptions = {
+  /** Org login, e.g. "bounded-systems" */
+  org: string;
+};
+
+/** One open issue/PR across an org, fetched via scoutd. */
+export type OrgWorkItem = {
+  /** Issue/PR node id. */
+  id: string;
+  kind: "Issue" | "PullRequest";
+  repo: string;
+  number: number;
+  title: string;
+  labels: string[];
+  /** Whether the issue has sub-issues (a blocked-by/parent signal). */
+  hasSubIssues: boolean;
+};
+
+/** Every open issue/PR across an org's repos (partial: some repos skipped). */
+export type OrgOpenWorkResult = {
+  items: OrgWorkItem[];
+  skipped: SkippedRepo[];
+};
+
+/** Options for enumerating an org's merged PRs via scoutd. */
+export type OrgMergedPrsOptions = {
+  /** Org login, e.g. "bounded-systems" */
+  org: string;
+};
+
+/** One merged PR across an org, fetched via scoutd (for traceability). */
+export type MergedPrInfo = {
+  repo: string;
+  number: number;
+  title: string;
+  authorLogin: string | null;
+  labels: string[];
+  /** How many issues this PR closes — a delivered-value signal. */
+  closingIssueCount: number;
+};
+
+/** Every merged PR across an org's repos (partial: some repos skipped). */
+export type OrgMergedPrsResult = {
+  items: MergedPrInfo[];
+  skipped: SkippedRepo[];
 };
 
 /** Options for fetching a URL via scoutd. */
@@ -285,6 +369,43 @@ export async function fetchProject(options: ProjectOptions): Promise<ProjectResu
 }
 
 /**
+ * List an org's repositories.
+ *
+ * Fail-closed on visibility: private repos are included only when
+ * `includePrivate` is set. Read-only — requires the `--scout` door.
+ */
+export async function fetchRepos(options: ReposOptions): Promise<ReposResult> {
+  return request<ReposResult>("repos", {
+    org: options.org,
+    includePrivate: options.includePrivate ?? false,
+  });
+}
+
+/**
+ * Enumerate every open issue/PR across an org's repos.
+ *
+ * Partial by design: repos scoutd cannot read are reported in `skipped`
+ * rather than aborting the whole enumeration. Requires the `--scout` door.
+ */
+export async function fetchOrgOpenWork(options: OrgOpenWorkOptions): Promise<OrgOpenWorkResult> {
+  return request<OrgOpenWorkResult>("orgOpenWork", {
+    org: options.org,
+  });
+}
+
+/**
+ * Enumerate every merged PR across an org's repos (for traceability).
+ *
+ * Partial by design: unreadable repos are reported in `skipped`. Requires the
+ * `--scout` door.
+ */
+export async function fetchOrgMergedPrs(options: OrgMergedPrsOptions): Promise<OrgMergedPrsResult> {
+  return request<OrgMergedPrsResult>("orgMergedPrs", {
+    org: options.org,
+  });
+}
+
+/**
  * Fetch a URL (allowlist enforced).
  *
  * Requires the `--scout` door.
@@ -389,6 +510,36 @@ async function main(): Promise<number> {
       console.log(JSON.stringify(result, null, 2));
       return 0;
     }
+    case "repos": {
+      const org = args[0];
+      if (!org) {
+        console.error("usage: scout repos <org> [--private]");
+        return 1;
+      }
+      const result = await fetchRepos({ org, includePrivate: args.includes("--private") });
+      console.log(JSON.stringify(result, null, 2));
+      return 0;
+    }
+    case "org-open-work": {
+      const org = args[0];
+      if (!org) {
+        console.error("usage: scout org-open-work <org>");
+        return 1;
+      }
+      const result = await fetchOrgOpenWork({ org });
+      console.log(JSON.stringify(result, null, 2));
+      return 0;
+    }
+    case "org-merged-prs": {
+      const org = args[0];
+      if (!org) {
+        console.error("usage: scout org-merged-prs <org>");
+        return 1;
+      }
+      const result = await fetchOrgMergedPrs({ org });
+      console.log(JSON.stringify(result, null, 2));
+      return 0;
+    }
     case "fetch": {
       const url = args[0];
       if (!url) {
@@ -408,6 +559,9 @@ Usage:
   scout pr <repo> <n>        fetch PR (--diff, --comments)
   scout issue <repo> <n>     fetch issue (--comments)
   scout project <org> <n>    fetch a Projects v2 board (--first, --after)
+  scout repos <org>          list an org's repos (--private)
+  scout org-open-work <org>  every open issue/PR across the org
+  scout org-merged-prs <org> every merged PR across the org
   scout fetch <url>          fetch URL content
 
 This command only works inside a box with the --scout door.`);
