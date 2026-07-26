@@ -291,7 +291,6 @@ export async function importAndPush(
   options: ImportAndPushOptions,
 ): Promise<ImportAndPushResult> {
   return request<ImportAndPushResult>("import-and-push", {
-    kind: "import-and-push",
     repo: translateRepoPath(options.repo),
     bundleBase64: options.bundleBase64,
     commitSha: options.commitSha,
