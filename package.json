@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "description": "In-box door-client SDK for claude-box's capability doors (keeper/scout/concierge/spawn), over the guest-room protocol.",
-  "license": "PolyForm-Noncommercial-1.0.0",
+  "license": "MIT",
   "author": "Robert DeLanghe (https://github.com/bdelanghe)",
   "repository": {
     "type": "git",
